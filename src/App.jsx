@@ -1,17 +1,36 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, NavLink } from "react-router-dom";
 import HomePage from "./components/Home.page";
 import Superheroes from "./components/Superheroes.page";
 import RQSuperHeroes from "./components/RQSuperheroes.page";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
+const navLinks = [
+  {
+    id: 1,
+    url: "/",
+    label: "Home",
+  },
+  {
+    id: 2,
+    url: "/RQsuperheroes",
+    label: "RQSuperHeroes",
+  },
+  {
+    id: 3,
+    url: "/superheroes",
+    label: "SuperHeroes",
+  }
+];
 
 const App = () => {
   const queryClient = new QueryClient();
   return (
     <>
       <nav className="flex gap-4 text-blue-500">
-        <Link to="/">Home</Link>
-        <Link to="/RQsuperheroes">RQSuperHeroes</Link>
-        <Link to="/superheroes">SuperHeroes</Link>
+        {navLinks.map((navLink) => (
+          <Link to={navLink.url}>{navLink.label}</Link>
+        ))}
       </nav>
       <QueryClientProvider client={queryClient}>
         <Routes>
@@ -19,6 +38,7 @@ const App = () => {
           <Route path="/RQsuperheroes" element={<RQSuperHeroes />} />
           <Route path="/superheroes" element={<Superheroes />} />
         </Routes>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>
   );

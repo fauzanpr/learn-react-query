@@ -1,70 +1,19 @@
-# Getting Started with Create React App
+# My React Query Daily
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Query Cache
+Setelah melakukan fetching data menggunakan React Query. Hasil data tersebut akan disimpan ke dalam cache (by default dalam waktu 5 menit). Ketika pertama kali melakukan fething, maka data tersebut disimpan dalam cache kemudian isLoading akan dibuat true. Untuk operasi selanjutnya (misalkan habis berpindah tab dan kembali ke tab tersebut), react query tidak melakukan fetching ulang dari database pada saat tampilan pertamanya, melainkan mengambil dari cache. Meskipun selanjutnya akan tetap disesuaikan juga dengan data di database, tetapi proses tersebut terjadi dibelakang layar (sehingga tidak menampilkan loading dan langsung mengupdate apabila ada perubahan). 
+Flag isLoading akan bernilai true pada saat fetching data pertama kali ke dalam server sedangkan untuk fetching" yang selanjutnya (background fetching), React Query menggunakan booledan isFetching sebagai flag yang diberikan nilai true saat proses fetching tersebut.
+```javascript
+const { isLoading, isFetching } = useQuery('key', fn);
+// isLoading : true when first time data fetching
+// isFetching : always true when refetching data
+```
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Mengubah Caching Time
+By Default, waktu penyimpanan data ke dalam cache tersebut adalah 5 menit dan sudah cukup ideal. Namun, mungkin ada saatnya, mungkin ingin mengubah waktu data tersimpan ke dalam cache. Hal itu bisa dilakukan dengan menambahkan parameter berupa object sebagai argumen ke 3, dengan key cacheTime dan value waktu simpan dengan satuan milisekon.
+```javascript
+useQuery('key', fn, {
+    cacheTime: 5000
+});
+// caching time diubah menjadi 5 detik atau 5000 ms
+```
