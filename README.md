@@ -17,3 +17,19 @@ useQuery('key', fn, {
 });
 // caching time diubah menjadi 5 detik atau 5000 ms
 ```
+
+## Stale, Fresh, and Fetching
+Ketika status tersebut merupakan status yang ada di React Query.
+- Jika dalam kondisi Stale, data akan dilakukan refetching saat ada window refoccused, component remount, atau network reconnect.
+- Apabila dalam kondisi Fresh, ditampilkan data hanya dari cache nya saja. Meskipun terdapat remount, network reconnect, ataupun window refoccused. Artinya, tidak ada proses refetching pada API pada kondisi fresh.
+- Fething : kondisi saat refetching data
+
+## StaleTime
+Stale time merupakan durasi ketika data berada di kondisi fresh sampai berpindah ke stale. Staletime mempunyai nilai default 0. Stale time bisa diubah, dengan cara berikut
+```javascript
+useQuery('key', fn, {
+    staleTime: 30000
+});
+```
+Kode di atas berarti mengubah staleTime menjadi 30 detik. Sehingga data berada pada kondisi fresh selama 30 detik. Jika kondisi fresh, data tidak akan mengambil data baru dari API selama 30 detik yang artinya akan full mengambil hanya dari cache. 
+- Data akan tetap berada di kondisi fresh selama 30 detik meskipun berpindah tab. (Jadi ketika pindah ke tab yang lain dan kembali lagi, maka waktu stale time tidak akan direset menjadi 30 detik kembali melainkan melanjutkan sisa waktunya jika waktu staleTime masih tersisa). Namun, ketika kembali ke tab semula setelah berpindah tab dan waktu stale time nya habis, maka data akan masuk ke fresh kembali dan menunggu sampai 30 detik kembali (waktu menunggu stale time direset lagi menjadi 30 detik)

@@ -9,7 +9,7 @@ const RQSuperHeroes = () => {
     "superheroes",
     getData,
     {
-      cacheTime: 5000
+      staleTime: 10000
     }
   );
 
