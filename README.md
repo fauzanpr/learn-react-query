@@ -33,3 +33,31 @@ useQuery('key', fn, {
 ```
 Kode di atas berarti mengubah staleTime menjadi 30 detik. Sehingga data berada pada kondisi fresh selama 30 detik. Jika kondisi fresh, data tidak akan mengambil data baru dari API selama 30 detik yang artinya akan full mengambil hanya dari cache. 
 - Data akan tetap berada di kondisi fresh selama 30 detik meskipun berpindah tab. (Jadi ketika pindah ke tab yang lain dan kembali lagi, maka waktu stale time tidak akan direset menjadi 30 detik kembali melainkan melanjutkan sisa waktunya jika waktu staleTime masih tersisa). Namun, ketika kembali ke tab semula setelah berpindah tab dan waktu stale time nya habis, maka data akan masuk ke fresh kembali dan menunggu sampai 30 detik kembali (waktu menunggu stale time direset lagi menjadi 30 detik)
+
+## Refetch
+### RefetchOnMount
+Default nya bernilai true. Sehingga ketika component on mount, ia akan melakukan refetch. Namun, jika diubah menjadi false, maka ketika component on mount, misalnya habis berpindah tab, ia tidak akan merefetch ulang.
+```javascript
+useQuery('key', fn, {
+    refetchOnMount: false
+})
+```
+### RefetchOnWindowFocus
+Default nya bernilai true. Ketika masuk ke windows tersebut akan melakukan refetch. Namun, bisa diganti menjadi false sehingga ketika kita berpindah windows, misal membuka vscode dan kembali ke browser pada halaman tersebut, ia tidak akan refetching. 
+```javascript
+useQuery('key', fn, {
+    refetchOnWindowFocus: false
+})
+```
+
+## Fetch when click button
+Cegah fetching pada saat onmounting component
+```javascript
+{
+    enabled: false
+}
+```
+Kemudian, menggunakan refetch.
+```js
+const { refetch } = useQuery();
+```

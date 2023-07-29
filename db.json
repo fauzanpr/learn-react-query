@@ -19,6 +19,11 @@
             "id": 4,
             "name": "Spiderman",
             "alterEgo": "Gatau"
+        },
+        {
+            "id": 5,
+            "name": "Megaman",
+            "alterEgo": "Saya Gatau"
         }
     ]
 }
