@@ -71,3 +71,14 @@ Menggunakan cara berikut
     onError: fnErrorSideEffect
 }
 ```
+
+## Data Transformation
+Terkadang, kita membutuhkan format data tertentu untuk ditampilkan. Namun, variabel data yang diambil dari destructuring useQuery merupakan format yang diberikan oleh response dari API nya. Kita bisa mengubah format data tersebut dengan menggunakan data transformation menggunakan select.
+```js
+{
+    select: (data) => {
+        // operation to change data format
+    }
+}
+```
+select tersebut menerima data sebagai parameter nya. Kemudian akan mereturn sebuah data baru yang akan mengoverwrite isi dari variabel data yang lama.

@@ -8,19 +8,25 @@ const RQSuperHeroes = () => {
     return axios.get("http://localhost:8000/superheroes");
   }
   const onSuccess = (data) => {
-    if (data.data.length === 4) {
+    if (data.length === 4) {
       setRefetchTime(null);
     }
   };
   const onError = () => {
     console.log('error ygy');
+    setRefetchTime(null);
   };
   const { data, isLoading, isError, error, isFetching } = useQuery(
     "superheroes",
     getData,
     {
       refetchInterval: refetchTime,
-      onSuccess: () => onSuccess(data)
+      onSuccess: () => onSuccess(data),
+      onError: onError,
+      select: (data) => {
+        const superHeroNameOnly = data.data.map(data => data.name);
+        return superHeroNameOnly;
+      }
     }
   );
 
@@ -32,10 +38,11 @@ const RQSuperHeroes = () => {
   return (
     <>
     {/* <button className="p-4 bg-blue-300" onClick={refetch}>See Heroes</button> */}
-      {data &&
+      {/* {data &&
         data.data.map((data) => {
           return <p key={data.id}>{data.name}</p>;
-        })}
+        })} */}
+        { data.map(d => <p key={d}>{ d }</p> ) }
     </>
   );
 };
