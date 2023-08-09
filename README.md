@@ -61,3 +61,13 @@ Kemudian, menggunakan refetch.
 ```js
 const { refetch } = useQuery();
 ```
+
+## Success and Error Callback
+Prinsipnya sama seperti useEffect, ketika success maka kita dapat memberikan side effect begitu juga pada error.
+Menggunakan cara berikut
+```js
+{
+    onSuccess: fnSuccessSideEffect,
+    onError: fnErrorSideEffect
+}
+```

@@ -1,15 +1,26 @@
 import axios from "axios";
+import { useState } from "react";
 import { useQuery } from "react-query";
 
 const RQSuperHeroes = () => {
+  const [refetchTime, setRefetchTime] = useState(3000);
   const getData = async () => {
     return axios.get("http://localhost:8000/superheroes");
   }
-  const { data, isLoading, isError, error, isFetching, refetch } = useQuery(
+  const onSuccess = (data) => {
+    if (data.data.length === 4) {
+      setRefetchTime(null);
+    }
+  };
+  const onError = () => {
+    console.log('error ygy');
+  };
+  const { data, isLoading, isError, error, isFetching } = useQuery(
     "superheroes",
     getData,
     {
-      enabled: false
+      refetchInterval: refetchTime,
+      onSuccess: () => onSuccess(data)
     }
   );
 
@@ -20,7 +31,7 @@ const RQSuperHeroes = () => {
 
   return (
     <>
-    <button className="p-4 bg-blue-300" onClick={refetch}>See Heroes</button>
+    {/* <button className="p-4 bg-blue-300" onClick={refetch}>See Heroes</button> */}
       {data &&
         data.data.map((data) => {
           return <p key={data.id}>{data.name}</p>;
