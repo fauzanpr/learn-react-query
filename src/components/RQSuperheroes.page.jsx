@@ -1,33 +1,23 @@
-import axios from "axios";
 import { useState } from "react";
-import { useQuery } from "react-query";
+import useGetSuperheroes from "../hooks/useGetSuperheroes";
 
 const RQSuperHeroes = () => {
-  const [refetchTime, setRefetchTime] = useState(3000);
-  const getData = async () => {
-    return axios.get("http://localhost:8000/superheroes");
-  }
-  const onSuccess = (data) => {
-    if (data.length === 4) {
-      setRefetchTime(null);
-    }
+  const [isEnabled, setIsEnabled] = useState(false);
+  const onSuccess = () => {
+    console.log("masuk ke sukses");
   };
   const onError = () => {
-    console.log('error ygy');
-    setRefetchTime(null);
+    console.log("error ygy");
   };
-  const { data, isLoading, isError, error, isFetching } = useQuery(
-    "superheroes",
-    getData,
-    {
-      refetchInterval: refetchTime,
-      onSuccess: () => onSuccess(data),
-      onError: onError,
-      select: (data) => {
-        const superHeroNameOnly = data.data.map(data => data.name);
-        return superHeroNameOnly;
-      }
-    }
+
+  const btnClickHandler = () => {
+    setIsEnabled(true);
+  };
+
+  const { data, isLoading, isFetching, error, isError } = useGetSuperheroes(
+    onSuccess,
+    onError,
+    isEnabled
   );
 
   console.log({ isLoading, isFetching }); // this will log the boolean status of isLoading and isFetching when fetch/refetching data from API
@@ -37,12 +27,10 @@ const RQSuperHeroes = () => {
 
   return (
     <>
-    {/* <button className="p-4 bg-blue-300" onClick={refetch}>See Heroes</button> */}
-      {/* {data &&
-        data.data.map((data) => {
-          return <p key={data.id}>{data.name}</p>;
-        })} */}
-        { data.map(d => <p key={d}>{ d }</p> ) }
+      <button className="hover:underline" onClick={btnClickHandler}>Klik untuk melihat superhero</button>
+      {data && data.map((data) => (
+        <p key={data}>{data}</p>
+      ))}
     </>
   );
 };
